@@ -17,15 +17,15 @@
 #    along with Eighty Seven.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-from django.conf.urls import patterns, include, url
-from tastypie.api import Api
+from tastypie.resources import ModelResource
+from eightyseven.models import *
 
-from eightyseven.api import *
+__all__ = ["PasswordStoreResource"]
 
-api_v1 = Api(api_name="eighty-seven-v1")
+class PasswordStoreResource(ModelResource):
+    class Meta:
+        queryset = PasswordStore.objects.all()
 
-urlpatterns = patterns('',
-    url(r'^$', StaticView.as_view(template="index.html", title="Welcome"), name="index"),
-    url(r'^api/', api_v1, name="api")
-    url(r'^home/', HomeView.as_view(), name="user-home"),
-)
+    def get_object_list(self, request):
+        qs = super(PasswordStoreResource, self).get_object_list(request)
+        return qs.filter(user=request.user)

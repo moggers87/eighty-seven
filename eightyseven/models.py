@@ -22,6 +22,8 @@ from django.db import models
 
 from annoying.fields import AutoOneToOneField
 
+__all__ = ["PasswordStore", "User"]
+
 class PasswordStore(models.Model):
     """Nothing more than a key-value store with a bit of meta data"""
     user = AutoOneToOneField(User, primary_key=True)

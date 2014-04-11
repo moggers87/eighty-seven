@@ -2,3 +2,4 @@ Django>=1.6
 South
 django-oauth-toolkit
 django-annoying
+django-tastypie
