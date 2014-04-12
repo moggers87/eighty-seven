@@ -25,6 +25,10 @@ from annoying.fields import AutoOneToOneField
 __all__ = ["PasswordStore", "User"]
 
 class PasswordStore(models.Model):
-    """Nothing more than a key-value store with a bit of meta data"""
+    """Nothing more than a key-value store with a bit of meta data
+
+    `data` is expected to be base64 encoded as most, if not all, of our
+    transports will require base64 data anyway
+    """
     user = AutoOneToOneField(User, primary_key=True)
-    data = models.BinaryField()
+    data = models.TextField(null=True)

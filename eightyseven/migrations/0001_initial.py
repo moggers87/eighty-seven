@@ -11,7 +11,7 @@ class Migration(SchemaMigration):
         # Adding model 'PasswordStore'
         db.create_table(u'eightyseven_passwordstore', (
             ('user', self.gf('annoying.fields.AutoOneToOneField')(to=orm['auth.User'], unique=True, primary_key=True)),
-            ('data', self.gf('django.db.models.fields.BinaryField')()),
+            ('data', self.gf('django.db.models.fields.TextField')(null=True)),
         ))
         db.send_create_signal(u'eightyseven', ['PasswordStore'])
 
@@ -60,7 +60,7 @@ class Migration(SchemaMigration):
         },
         u'eightyseven.passwordstore': {
             'Meta': {'object_name': 'PasswordStore'},
-            'data': ('django.db.models.fields.BinaryField', [], {}),
+            'data': ('django.db.models.fields.TextField', [], {'null': 'True'}),
             'user': ('annoying.fields.AutoOneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True', 'primary_key': 'True'})
         }
     }
