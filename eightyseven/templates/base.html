@@ -1,0 +1,15 @@
+{% load i18n %} 
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <title>{{ site_name }} - {{ headline }}</title> 
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {% block head%}
+        {% endblock %}
+    </head>
+    <body>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>
