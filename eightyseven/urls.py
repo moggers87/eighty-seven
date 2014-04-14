@@ -25,9 +25,11 @@ from eightyseven.api import *
 from eightyseven.views import *
 
 api_v1 = Api(api_name="eighty-seven-v1")
+api_v1.register(PasswordStoreResource())
+
 
 urlpatterns = patterns('',
     url(r'^$', StaticView.as_view(template_name="index.html", headline=_("Welcome")), name="index"),
-    url(r'^api/', api_v1),
+    url(r'^api/', include(api_v1.urls)),
     url(r'^home/', HomeView.as_view(), name="user-home"),
 )
