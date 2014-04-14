@@ -69,6 +69,11 @@ class SingleModelResource(ModelResource):
 class UserResource(SingleModelResource):
     passwordstore = fields.ForeignKey("eightyseven.api.PasswordStoreResource", 'passwordstore', readonly=True)
 
+    def __init__(self, *args, **kwargs):
+        output = super(UserResource, self).__init__(*args, **kwargs)
+        for field in self._meta.fields:
+            getattr(self, field).readonly = True
+
     class Meta:
         queryset = User.objects.all()
         authorization = UserAuthorization()
