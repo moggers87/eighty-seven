@@ -17,21 +17,27 @@
 #    along with Eighty Seven.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-from tastypie.resources import ModelResource
+from django.conf.urls import url
+
+from tastypie import http, fields
+from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
-from tastypie.authentication import Authentication
 from tastypie.exceptions import Unauthorized
+from tastypie.resources import ModelResource
+from tastypie.utils import trailing_slash
 
 from eightyseven.models import *
 
-__all__ = ["PasswordStoreResource"]
+__all__ = ["PasswordStoreResource", "UserResource"]
 
 class UserAuthorization(Authorization):
     def read_list(self, object_list, bundle):
-        raise Unauthorized("Nope")
+        return object_list.filter(pk=bundle.request.user.pk)
 
     def read_detail(self, object_list, bundle):
-        return bundle.obj.user == bundle.request.user
+        if bundle.obj.pk is not None:
+            return bundle.obj.pk == bundle.request.user.pk
+        return True
 
     def create_list(self, object_list, bundle):
         raise Unauthorized("Nope")
@@ -51,12 +57,32 @@ class UserAuthorization(Authorization):
     def delete_detail(self, object_list, bundle):
         raise Unauthorized("Nope")
 
-class PasswordStoreResource(ModelResource):
+class SingleModelResource(ModelResource):
+    """Just like ModelResource, but has a /self/ url"""
+
+    def get_detail(self, request, **kwargs):
+        # Place the authenticated user's id in the get detail request
+        if "pk" in kwargs and kwargs["pk"] == "self":
+            kwargs["pk"] = request.user.pk
+        return super(SingleModelResource, self).get_detail(request, **kwargs)
+
+class UserResource(SingleModelResource):
+    passwordstore = fields.ForeignKey("eightyseven.api.PasswordStoreResource", 'passwordstore', readonly=True)
+
+    class Meta:
+        queryset = User.objects.all()
+        authorization = UserAuthorization()
+        authentication = BasicAuthentication()
+        detail_allowed_methods = ["get"]
+        list_allowed_methods = ["get"]
+        fields = ["date_joined", "email", "last_login", "username"]
+
+class PasswordStoreResource(SingleModelResource):
+    user = fields.ForeignKey("eightyseven.api.UserResource", 'user', readonly=True)
+
     class Meta:
         queryset = PasswordStore.objects.all()
         authorization = UserAuthorization()
-        authentication = Authentication() # TODO: don't deploy with this
-
-    def get_object_list(self, request):
-        qs = super(PasswordStoreResource, self).get_object_list(request)
-        return qs.filter(user=request.user)
+        authentication = BasicAuthentication()
+        detail_allowed_methods = ["get", "put"]
+        list_allowed_methods = ["get"]

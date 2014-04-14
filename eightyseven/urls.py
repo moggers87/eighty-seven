@@ -24,9 +24,9 @@ from tastypie.api import Api
 from eightyseven.api import *
 from eightyseven.views import *
 
-api_v1 = Api(api_name="eighty-seven-v1")
+api_v1 = Api(api_name="v1")
 api_v1.register(PasswordStoreResource())
-
+api_v1.register(UserResource())
 
 urlpatterns = patterns('',
     url(r'^$', StaticView.as_view(template_name="index.html", headline=_("Welcome")), name="index"),
