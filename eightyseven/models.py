@@ -29,6 +29,11 @@ class PasswordStore(models.Model):
 
     `data` is expected to be base64 encoded as most, if not all, of our
     transports will require base64 data anyway
+
+    `algorithm`, `iv`, `mode` are provided to allow upgrades later on
     """
     user = AutoOneToOneField(User, primary_key=True)
-    data = models.TextField(null=True)
+    data = models.TextField(null=True, help_text="Base64 encoded and encrypted JSON data")
+    iv = models.CharField(null=True, max_length=32, help_text="Initialisation vector, base64 encoded")
+    algorithm = models.CharField(default="AES-256", max_length=32, help_text="Algorithm used")
+    mode = models.CharField(default="CBC", max_length=32, help_text="Block cipher mode used")
