@@ -17,12 +17,19 @@
 #    along with Eighty Seven.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.conf.urls import patterns, include, url
 from tastypie.api import Api
 
 from eightyseven.api import *
 from eightyseven.views import *
+
+_login_context = { # extra context for contrib.auth views
+                    "site_name": settings.SITE_NAME,
+                    "enable_registration": settings.ENABLE_REGISTRATION,
+                    "headline": _("Login"),
+                }
 
 api_v1 = Api(api_name="v1")
 api_v1.register(PasswordStoreResource())
@@ -31,5 +38,6 @@ api_v1.register(UserResource())
 urlpatterns = patterns('',
     url(r'^$', StaticView.as_view(template_name="index.html", headline=_("Welcome")), name="index"),
     url(r'^api/', include(api_v1.urls)),
-    url(r'^home/', HomeView.as_view(), name="user-home"),
+    url(r'^home/$', HomeView.as_view(), name="user-home"),
+    url(r'^login/$', "django.contrib.auth.views.login", {"template_name": "login.html", "extra_context": _login_context}, name="user-login"),
 )
