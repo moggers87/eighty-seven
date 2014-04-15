@@ -1,4 +1,4 @@
-# Eight-Seven
+# Eighty-Seven
 
 I'm still on the hunt for a password manager that does everything I need:
 
