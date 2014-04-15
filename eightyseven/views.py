@@ -40,7 +40,7 @@ class HomeView(LoginRequiredMixin, CommonMixin, DetailView):
     """Home view for logged in user, gives them their encrypted blob"""
     headline = _("Home")
     model = PasswordStore
-    template = "passwordstore.html"
+    template_name = "passwordstore.html"
 
     def get_object(self):
-        obj =  self.model.get(user=self.request.user)
+        return  self.request.user.passwordstore
