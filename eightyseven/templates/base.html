@@ -16,7 +16,7 @@
                 <li><a href="{% url "home" %}">{% trans "Home" %}</a></li>
                 <li><a href="{% url "logout" %}">{% trans "Logout" %}</a></li>
             {% else %}
-                <li><a href="{% url "login" %}">{% trans "Login" %}</li>
+                <li><a href="{% url "login" %}">{% trans "Login" %}</a></li>
                 {% if enable_registration %}
                     <li><a href="{% url "signup" %}">{% trans "Sign up" %}</a></li>
                 {% endif %}
