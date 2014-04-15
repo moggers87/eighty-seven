@@ -25,8 +25,8 @@ from django.core.urlresolvers import reverse_lazy
 from tastypie.api import Api
 
 from eightyseven.api import *
+from eightyseven.forms import PlaceHolderAuthenticationForm
 from eightyseven.views import *
-
 
 _login_context = { # extra context for contrib.auth views
                     "site_name": settings.SITE_NAME,
