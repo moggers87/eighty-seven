@@ -1,5 +1,5 @@
 env/
 *.egg
 *.py[c|o]
-eightyseven/settings.py
 db.sqlite3
+settings.ini

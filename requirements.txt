@@ -1,5 +1,7 @@
 Django>=1.6
 South
-django-oauth-toolkit
+configobj
 django-annoying
+django-oauth-toolkit
 django-tastypie
+pytz
