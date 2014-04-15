@@ -20,10 +20,13 @@
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.conf.urls import patterns, include, url
+from django.core.urlresolvers import reverse_lazy
+
 from tastypie.api import Api
 
 from eightyseven.api import *
 from eightyseven.views import *
+
 
 _login_context = { # extra context for contrib.auth views
                     "site_name": settings.SITE_NAME,
@@ -38,6 +41,8 @@ api_v1.register(UserResource())
 urlpatterns = patterns('',
     url(r'^$', StaticView.as_view(template_name="index.html", headline=_("Welcome")), name="index"),
     url(r'^api/', include(api_v1.urls)),
-    url(r'^home/$', HomeView.as_view(), name="user-home"),
-    url(r'^login/$', "django.contrib.auth.views.login", {"template_name": "login.html", "extra_context": _login_context}, name="user-login"),
-)
+    url(r'^home/$', HomeView.as_view(), name="home"),
+    url(r'^login/$', "django.contrib.auth.views.login", {"template_name": "login.html", "authentication_form": PlaceHolderAuthenticationForm, "extra_context": _login_context}, name="login"),
+    url(r'^logout/$', "django.contrib.auth.views.logout", {"next_page": reverse_lazy("index")}, name="logout"),
+    url(r'^$', StaticView.as_view(template_name="index.html", headline=_("Fake signup page")), name="signup"),
+    )

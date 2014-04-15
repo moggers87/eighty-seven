@@ -9,6 +9,20 @@
         {% endblock %}
     </head>
     <body>
+        <div class="menu">
+            <ul>
+                <li><a href="{% url "index" %}">{{ site_name }}</a></li>
+            {% if user.is_authenicated %}
+                <li><a href="{% url "home" %}">{% trans "Home" %}</a></li>
+                <li><a href="{% url "logout" %}">{% trans "Logout" %}</a></li>
+            {% else %}
+                <li><a href="{% url "login" %}">{% trans "Login" %}</li>
+                {% if enable_registration %}
+                    <li><a href="{% url "signup" %}">{% trans "Sign up" %}</a></li>
+                {% endif %}
+            {% endif %}
+            </ul>
+        </div>
         {% block content %}
         {% endblock %}
     </body>
