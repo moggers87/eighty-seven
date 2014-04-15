@@ -30,7 +30,7 @@ class CommonMixin(SetHeadlineMixin, StaticContextMixin):
 
     Can be given headline (string) and static_context (dict)
     """
-    static_context = {"site_name": settings.SITE_NAME, "enable_registration": settings.ENABLE_REGISTRATION }
+    static_context = {"site_name": settings.SITE_NAME, "enable_registration": settings.ENABLE_REGISTRATION}
 
 class StaticView(CommonMixin, TemplateView):
     """TemplateView, with CommonMixin"""
@@ -38,6 +38,7 @@ class StaticView(CommonMixin, TemplateView):
 
 class HomeView(LoginRequiredMixin, CommonMixin, DetailView):
     """Home view for logged in user, gives them their encrypted blob"""
+    headline = _("Home")
     model = PasswordStore
     template = "passwordstore.html"
 
