@@ -29,14 +29,14 @@ As plaintext, it should be another JSON document. It should conform to this basi
 {
     "passwords": [
         {
-            "name": "sgrub"
-            "username": "carcinoGeneticist"
+            "name": "sgrub",
+            "username": "carcinoGeneticist",
             "password": "*PASSWORD*"
         },
         {
-            "name": "sburb"
-            "username": "ghostyTrickster"
-            "password": "bluh"
+            "name": "sburb",
+            "username": "ghostyTrickster",
+            "password": "bluh",
             "url": "https://mspaintadventures.com/"
         }
     ]
