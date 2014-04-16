@@ -8,31 +8,31 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'PasswordStore.iv'
-        db.add_column(u'eightyseven_passwordstore', 'iv',
-                      self.gf('django.db.models.fields.CharField')(max_length=32, null=True),
-                      keep_default=False)
-
         # Adding field 'PasswordStore.algorithm'
         db.add_column(u'eightyseven_passwordstore', 'algorithm',
-                      self.gf('django.db.models.fields.CharField')(default='AES-256', max_length=32),
+                      self.gf('django.db.models.fields.CharField')(default='AES-GCM-256', max_length=32),
                       keep_default=False)
 
-        # Adding field 'PasswordStore.mode'
-        db.add_column(u'eightyseven_passwordstore', 'mode',
-                      self.gf('django.db.models.fields.CharField')(default='CBC', max_length=32),
+        # Adding field 'PasswordStore.iv'
+        db.add_column(u'eightyseven_passwordstore', 'iv',
+                      self.gf('django.db.models.fields.CharField')(max_length=128, null=True),
+                      keep_default=False)
+
+        # Adding field 'PasswordStore.mac'
+        db.add_column(u'eightyseven_passwordstore', 'mac',
+                      self.gf('django.db.models.fields.CharField')(max_length=128, null=True),
                       keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting field 'PasswordStore.iv'
-        db.delete_column(u'eightyseven_passwordstore', 'iv')
-
         # Deleting field 'PasswordStore.algorithm'
         db.delete_column(u'eightyseven_passwordstore', 'algorithm')
 
-        # Deleting field 'PasswordStore.mode'
-        db.delete_column(u'eightyseven_passwordstore', 'mode')
+        # Deleting field 'PasswordStore.iv'
+        db.delete_column(u'eightyseven_passwordstore', 'iv')
+
+        # Deleting field 'PasswordStore.mac'
+        db.delete_column(u'eightyseven_passwordstore', 'mac')
 
 
     models = {
@@ -74,10 +74,10 @@ class Migration(SchemaMigration):
         },
         u'eightyseven.passwordstore': {
             'Meta': {'object_name': 'PasswordStore'},
-            'algorithm': ('django.db.models.fields.CharField', [], {'default': "'AES-256'", 'max_length': '32'}),
+            'algorithm': ('django.db.models.fields.CharField', [], {'default': "'AES-GCM-256'", 'max_length': '32'}),
             'data': ('django.db.models.fields.TextField', [], {'null': 'True'}),
-            'iv': ('django.db.models.fields.CharField', [], {'max_length': '32', 'null': 'True'}),
-            'mode': ('django.db.models.fields.CharField', [], {'default': "'CBC'", 'max_length': '32'}),
+            'iv': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True'}),
+            'mac': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True'}),
             'user': ('annoying.fields.AutoOneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True', 'primary_key': 'True'})
         }
     }
