@@ -23,7 +23,8 @@ Guess I need to suck it up and learn JS :P
 The JSON API is self documenting, with the exception of `PasswordStore.data`.
 This is the encrypted binary payload that contains the user's passwords.
 
-As plaintext, it should be another JSON document. It should conform to this basic structure:
+As plaintext, it should be another JSON document. It should conform to this
+basic structure:
 
 ```
 {
@@ -43,6 +44,8 @@ As plaintext, it should be another JSON document. It should conform to this basi
 }
 ```
 
-Clients should take care to preserve data they don't edit when saving, e.g. if another client
-adds another top-level key `ssh-keys`, care should be taken to preserve that data even in
-clients that don't support reading or writing `ssh-keys`.
+Clients should take care to preserve data they don't edit when saving, e.g. if
+another client adds another top-level key `ssh-keys`, care should be taken to
+preserve that data even in clients that don't support reading or writing
+`ssh-keys`. An exception to this is "\_padding" which can be added and removed
+as needed.
