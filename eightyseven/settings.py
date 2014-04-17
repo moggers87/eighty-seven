@@ -1,12 +1,22 @@
-"""
-Django settings for eightyseven project.
+##
+#    Copyright (C) 2014 Jessica Tallon & Matt Molyneaux
+#
+#    This file is part of Inboxen.
+#
+#    Inboxen is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    Inboxen is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with Inboxen  If not, see <http://www.gnu.org/licenses/>.
+##
 
-For more information on this file, see
-https://docs.djangoproject.com/en/1.6/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.6/ref/settings/
-"""
 from configobj import ConfigObj
 from validate import Validator
 from django.core.urlresolvers import reverse_lazy
@@ -53,9 +63,6 @@ DATABASES = {
     }
 }
 
-# Static settings, point django at your own settings module if you need to
-# override any of these or add any new options
-
 LOGIN_URL = reverse_lazy("login")
 LOGOUT_URL = reverse_lazy("logout")
 LOGIN_REDIRECT_URL = reverse_lazy("home")
@@ -86,17 +93,10 @@ ROOT_URLCONF = 'eightyseven.urls'
 
 WSGI_APPLICATION = 'eightyseven.wsgi.application'
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.6/topics/i18n/
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
