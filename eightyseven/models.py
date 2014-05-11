@@ -22,24 +22,4 @@ from django.db import models
 
 from annoying.fields import AutoOneToOneField
 
-__all__ = ["PasswordStore", "User"]
-
-class PasswordStore(models.Model):
-    """Nothing more than a key-value store with a bit of meta data
-
-    `data` is expected to be base64 encoded as most, if not all, of our
-    transports will require base64 data anyway
-
-    `algorithm` is an identifier for the exact algorithm being used, e.g.
-    AES-GCM-256. It shold contain enough information for someone else to
-    decrypt and verify `data` given the correct key
-
-    `iv` is the initialisation vector or nonce
-
-    `mac` is the hexdigest used to verify `data`
-    """
-    user = AutoOneToOneField(User, primary_key=True)
-    data = models.TextField(null=True, help_text="Base64 encoded and encrypted JSON data")
-    algorithm = models.CharField(default="AES-GCM-256", max_length=32, help_text="Algorithm used")
-    iv = models.CharField(null=True, max_length=128, help_text="Initialisation vector, base64 encoded")
-    mac = models.CharField(null=True, max_length=128, help_text="Either digest provided by algorithm or separate HMAC")
+__all__ = ["User"]
