@@ -3,3 +3,4 @@ env/
 *.py[c|o]
 db.sqlite3
 settings.ini
+*.swp
