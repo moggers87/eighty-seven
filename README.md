@@ -20,32 +20,4 @@ Guess I need to suck it up and learn JS :P
 
 ## API
 
-The JSON API is self documenting, with the exception of `PasswordStore.data`.
-This is the encrypted binary payload that contains the user's passwords.
-
-As plaintext, it should be another JSON document. It should conform to this
-basic structure:
-
-```
-{
-    "passwords": [
-        {
-            "name": "sgrub",
-            "username": "carcinoGeneticist",
-            "password": "*PASSWORD*"
-        },
-        {
-            "name": "sburb",
-            "username": "ghostyTrickster",
-            "password": "bluh",
-            "url": "https://mspaintadventures.com/"
-        }
-    ]
-}
-```
-
-Clients should take care to preserve data they don't edit when saving, e.g. if
-another client adds another top-level key `ssh-keys`, care should be taken to
-preserve that data even in clients that don't support reading or writing
-`ssh-keys`. An exception to this is "\_padding" which can be added and removed
-as needed.
+Everything changed, will document later

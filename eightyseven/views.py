@@ -19,7 +19,7 @@
 
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import TemplateView, DetailView
+from django.views.generic import TemplateView, ListView
 
 from braces.views import LoginRequiredMixin, SetHeadlineMixin, StaticContextMixin
 
@@ -36,11 +36,14 @@ class StaticView(CommonMixin, TemplateView):
     """TemplateView, with CommonMixin"""
     pass
 
-class HomeView(LoginRequiredMixin, CommonMixin, DetailView):
+class HomeView(LoginRequiredMixin, CommonMixin, ListView):
     """Home view for logged in user, gives them their encrypted blob"""
     headline = _("Home")
     model = PasswordStore
     template_name = "passwordstore.html"
 
-    def get_object(self):
-        return  self.request.user.passwordstore
+    def get_queryset(self, *args, **kwargs):
+        qs = super(HomeView, self).get_queryset(*args, **kwargs)
+        qs = qs.filter(user=self.request.user).select_related("passwordrecord")
+
+        return qs

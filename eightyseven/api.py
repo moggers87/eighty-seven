@@ -31,12 +31,13 @@ from eightyseven.models import *
 __all__ = ["PasswordStoreResource", "UserResource"]
 
 class UserAuthorization(Authorization):
+    """Ignores group permissions"""
     def read_list(self, object_list, bundle):
-        return object_list.filter(pk=bundle.request.user.pk)
+        return object_list.filter(user=bundle.request.user)
 
     def read_detail(self, object_list, bundle):
         if bundle.obj.pk is not None:
-            return bundle.obj.pk == bundle.request.user.pk
+            return bundle.obj.user == bundle.request.user
         return True
 
     def create_list(self, object_list, bundle):
@@ -59,7 +60,6 @@ class UserAuthorization(Authorization):
 
 class SingleModelResource(ModelResource):
     """Just like ModelResource, but has a /self/ url"""
-
     def get_detail(self, request, **kwargs):
         # Place the authenticated user's id in the get detail request
         if "pk" in kwargs and kwargs["pk"] == "self":

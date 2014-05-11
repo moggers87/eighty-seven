@@ -1,7 +1,8 @@
-Django>=1.6
+Django>=1.6,<1.7
 South
 configobj
 django-annoying
+django-bitfield
 django-oauth-toolkit
 django-tastypie
 pytz
