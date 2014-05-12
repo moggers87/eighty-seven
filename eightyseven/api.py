@@ -30,10 +30,27 @@ from eightyseven.models import *
 
 __all__ = ["PasswordStoreResource", "PasswordRecordResource"]
 
-class UserAuthorization(Authorization):
+class UserAuth(Authorization):
     """Ignores group permissions"""
-    def __init__(self, user_rel="user"):
-        self.user_rel = user_rel
+    user_rel = "user"
+
+    def __getattr__(self, name):
+        try:
+            auth_type = name.split("_")[1]
+        except IndexError:
+            raise AttributeError("No such method: {0}".format(name))
+
+        return getattr(self, "default_{0}".format(auth_type))
+
+    def get_user_attr(self, obj):
+        """Grabs the user field from obj, using self.user_rel to find it"""
+        return reduce(getattr, self.user_rel, obj)
+
+    def default_detail(self, object_list, bundle):
+        return self.get_user_attr(bundle.obj) == bundle.request.user
+
+    def default_list(self, object_list, bundle):
+        raise Unauthorized("Nope")
 
     def read_list(self, object_list, bundle):
         return object_list.filter(**{self.user_rel: bundle.request.user})
@@ -44,41 +61,28 @@ class UserAuthorization(Authorization):
             return qs.exists()
         return True
 
-    def create_list(self, object_list, bundle):
-        raise Unauthorized("Nope")
-
-    def create_detail(self, object_list, bundle):
-        raise Unauthorized("Nope")
-
-    def update_list(self, object_list, bundle):
-        raise Unauthorized("Nope")
-
-    def update_detail(self, object_list, bundle):
-        return bundle.obj.user == bundle.request.user
-
-    def delete_list(self, object_list, bundle):
-        raise Unauthorized("Nope")
-
-    def delete_detail(self, object_list, bundle):
-        raise Unauthorized("Nope")
+class RecordUserAuth(UserAuth):
+    user_rel = "store__user"
 
 class PasswordStoreResource(ModelResource):
     records = fields.ToManyField("eightyseven.api.PasswordRecordResource", 'passwordrecord_set', full=True, null=True)
-    flags = fields.DictField('flags__items')
+    flags = fields.DictField('flags__items', readonly=True)
 
     class Meta:
         queryset = PasswordStore.objects.all()
-        authorization = UserAuthorization()
+        authorization = UserAuth()
         authentication = BasicAuthentication()
-        detail_allowed_methods = ["get", "put"]
-        list_allowed_methods = ["get"]
+        excludes = ["group"]
+
+    def obj_create(self, bundle, **kwargs):
+        kwargs["user"] = bundle.request.user
+        return super(PasswordStoreResource, self).obj_create(bundle, **kwargs)
 
 class PasswordRecordResource(ModelResource):
-    store = fields.ForeignKey("eightyseven.api.PasswordStoreResource", 'store', readonly=True)
+    store = fields.ForeignKey("eightyseven.api.PasswordStoreResource", 'store')
+    updated = fields.DateTimeField("updated", readonly=True)
 
     class Meta:
         queryset = PasswordRecord.objects.all()
-        authorization = UserAuthorization("store__user")
+        authorization = RecordUserAuth()
         authentication = BasicAuthentication()
-        detail_allowed_methods = ["get", "put"]
-        list_allowed_methods = ["get"]
