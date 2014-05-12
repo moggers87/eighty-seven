@@ -42,7 +42,7 @@ class PasswordRecord(models.Model):
     `updated` is not to be trusted - it is not tamper proof and is only there for convenience
     """
     store = models.ForeignKey(PasswordStore)
-    data = models.TextField(null=True, help_text="Base64 encoded and encrypted JSON data")
-    iv = models.CharField(null=True, max_length=128, help_text="Initialisation vector, base64 encoded")
-    mac = models.CharField(null=True, max_length=128, help_text="Either digest provided by algorithm or separate HMAC")
+    data = models.TextField(help_text="Base64 encoded and encrypted JSON data")
+    iv = models.CharField(max_length=128, help_text="Initialisation vector, base64 encoded")
+    mac = models.CharField(max_length=128, help_text="Either digest provided by algorithm or separate HMAC")
     updated = models.DateTimeField(auto_now=True)
