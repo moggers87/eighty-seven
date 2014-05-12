@@ -36,7 +36,7 @@ _login_context = { # extra context for contrib.auth views
 
 api_v1 = Api(api_name="v1")
 api_v1.register(PasswordStoreResource())
-api_v1.register(UserResource())
+api_v1.register(PasswordRecordResource())
 
 urlpatterns = patterns('',
     url(r'^$', StaticView.as_view(template_name="index.html", headline=_("Welcome")), name="index"),
