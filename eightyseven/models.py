@@ -35,6 +35,7 @@ class PasswordStore(models.Model):
     group = models.OneToOneField(Group, null=True)
     algorithm = models.CharField(default="AES-GCM-256", max_length=32, help_text="Algorithm used")
     flags = BitField(flags=("group_read_only",), default=1)
+    description = models.CharField(null=True, max_length=255)
 
 class PasswordRecord(models.Model):
     """A password (or maybe other data) that the client has encypted
