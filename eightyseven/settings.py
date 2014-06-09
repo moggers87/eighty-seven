@@ -44,6 +44,7 @@ ENABLE_REGISTRATION = general_config["enable_registration"]
 LANGUAGE_CODE = general_config["language_code"]
 SECRET_KEY = general_config["secret_key"]
 SITE_NAME = general_config["site_name"]
+STATIC_ROOT = os.path.join(BASE_DIR, general_config["static_root"])
 TIME_ZONE = general_config["time_zone"]
 
 # db
