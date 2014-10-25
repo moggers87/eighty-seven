@@ -19,11 +19,12 @@
 
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, FormView
 
 from braces.views import LoginRequiredMixin, SetHeadlineMixin, StaticContextMixin
 
 from eightyseven.models import *
+from eightyseven.forms import UserSettingsForm
 
 class CommonMixin(SetHeadlineMixin, StaticContextMixin):
     """Common items that are used in all views
@@ -36,14 +37,8 @@ class StaticView(CommonMixin, TemplateView):
     """TemplateView, with CommonMixin"""
     pass
 
-class HomeView(LoginRequiredMixin, CommonMixin, ListView):
-    """Home view for logged in user, gives them their encrypted blob"""
+class HomeView(LoginRequiredMixin, CommonMixin, FormView):
+    """Home view for logged in user, gives them some options"""
+    form_class = forms.UserSettingsForm
     headline = _("Home")
-    model = PasswordStore
-    template_name = "passwordstore.html"
-
-    def get_queryset(self, *args, **kwargs):
-        qs = super(HomeView, self).get_queryset(*args, **kwargs)
-        qs = qs.filter(user=self.request.user).select_related("passwordrecord")
-
-        return qs
+    template_name = "home.html"

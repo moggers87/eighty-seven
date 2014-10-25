@@ -28,3 +28,6 @@ class PlaceHolderAuthenticationForm(AuthenticationForm):
             label = field.label.title()
             field.widget.attrs.update({"placeholder": label})
         return output
+
+class UserSettingsForm(fomrs.Form):
+    pass
